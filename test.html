@@ -137,7 +137,7 @@
 
             if (fromTimeStr && !toTimeStr) {  
                 const now = new Date();  
-                toTimeStr = ${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} AM;  
+                toTimeStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} AM`;  
                 document.getElementById('toTime').value = toTimeStr;  
             }  
 
@@ -153,7 +153,7 @@
                 const hours = Math.floor((totalMinutes % (60 * 24)) / 60);  
                 const minutes = totalMinutes % 60;  
 
-                document.getElementById('result').innerText = الفرق: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة.;  
+                document.getElementById('result').innerText = `الفرق: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة.`;  
 
                 // الحصول على القيم المختارة
                 const location = document.getElementById('location').value;  
