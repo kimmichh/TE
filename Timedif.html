@@ -1,0 +1,149 @@
+<!DOCTYPE html>  
+<html lang="ar">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Time Difference</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            background-color: #eceef7;  
+            color: white;  
+            margin: 0;  
+            padding: 0;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+            height: 100vh;  
+            direction: rtl;  
+            flex-direction: column;  /* إضافة هذا السطر لتنسيق العناصر عموديًا */  
+        }  
+        .container {  
+            background-color: #702283;  
+            padding: 20px;  
+            border-radius: 10px;  
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);  
+            text-align: center;  
+            max-width: 400px;  
+            width: 100%;  
+        }  
+        input[type="text"] {  
+            width: calc(100% - 22px);  
+            padding: 10px;  
+            margin-bottom: 10px;  
+            border-radius: 5px;  
+            border: none;  
+            text-align: left;  
+            direction: ltr;  
+        }  
+        button {  
+            background-color: #eceef7;  
+            color: #702283;  
+            border: none;  
+            padding: 10px 20px;  
+            border-radius: 5px;  
+            cursor: pointer;  
+            font-size: 16px;  
+        }  
+        button:hover {  
+            background-color: #dcdfe6;  
+        }  
+        .result {  
+            margin-top: 20px;  
+            font-size: 18px;  
+        }  
+        .status {  
+            margin-top: 10px;  
+            font-weight: bold;  
+            font-size: 18px;  
+        }  
+        .available {  
+            color: green;  
+        }  
+        .not-available {  
+            color: red;  
+        }  
+        footer {  
+            margin-top: 20px;  
+            text-align: center;  
+            font-size: 14px;  
+            color: #702283;  
+        }  
+    </style>  
+</head>  
+<body>  
+    <div class="container">  
+        <h2>احسب الفرق بين التوقيتين</h2>  
+        <label for="timeRange">أدخل التوقيتين:</label>  
+        <input type="text" id="timeRange" placeholder="YYYY-MM-DD HH:MM AM/PM YYYY-MM-DD HH:MM AM/PM">  
+        <button id="calcButton">احسب الفرق</button>  
+        <div class="result" id="result"></div>  
+        <div class="status" id="status"></div>  
+    </div>  
+
+    <footer>  
+        Created By: Kareem Mahdi  
+    </footer>  
+
+    <script>  
+        function parseDateTime(dateString) {  
+            const dateParts = dateString.split(' ');  
+            const date = dateParts[0]; // YYYY-MM-DD  
+            const time = dateParts[1]; // HH:MM  
+            const ampm = dateParts[2]; // AM/PM  
+
+            const [year, month, day] = date.split('-').map(Number);  
+            let [hours, minutes] = time.split(':').map(Number);  
+
+            if (ampm === 'PM' && hours !== 12) {  
+                hours += 12; // تحويل إلى 24 ساعة  
+            } else if (ampm === 'AM' && hours === 12) {  
+                hours = 0;  
+            }  
+
+            return new Date(year, month - 1, day, hours, minutes);  
+        }  
+
+        function calculateDifference() {  
+            const timeRangeStr = document.getElementById('timeRange').value.trim();  
+            const timeRanges = timeRangeStr.split(' ').filter(part => part);  
+
+            if (timeRanges.length === 6) {  
+                const fromStr = timeRanges.slice(0, 3).join(' ');  
+                const toStr = timeRanges.slice(3).join(' ');  
+
+                const from = parseDateTime(fromStr);  
+                const to = parseDateTime(toStr);  
+
+                const difference = to - from;  
+
+                const totalMinutes = Math.floor(difference / (1000 * 60));  
+                const totalHours = totalMinutes / 60; // عدد الساعات الكلي  
+                const days = Math.floor(totalMinutes / (60 * 24));  
+                const hours = Math.floor((totalMinutes % (60 * 24)) / 60);  
+                const minutes = totalMinutes % 60;  
+
+                document.getElementById('result').innerText = `الفرق: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة.`;  
+
+                // عرض الحالة حسب الفرق  
+                const statusDiv = document.getElementById('status');  
+                if (totalHours > 5.9833) { // 5:59 ساعات تعني 5.9833 ساعات  
+                    statusDiv.innerText = "متاح للتعويض";   
+                    statusDiv.className = "status available"; // إضافة فئة CSS للسماح بتغيير اللون إلى الأخضر  
+                } else {  
+                    statusDiv.innerText = "غير مستحق للتعويض";   
+                    statusDiv.className = "status not-available"; // إضافة فئة CSS للسماح بتغيير اللون إلى الأحمر  
+                }  
+
+            } else {  
+                document.getElementById('result').innerText = 'يرجى إدخال توقيتين صحيحين. تأكد من التنسيق.';  
+                document.getElementById('status').innerText = ''; // مسح حالة التعويض  
+            }  
+        }  
+
+        document.addEventListener('DOMContentLoaded', function() {  
+            document.getElementById('calcButton').addEventListener('click', calculateDifference);  
+        });  
+    </script>  
+</body>  
+</html>
