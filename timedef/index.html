@@ -122,10 +122,11 @@
             right: 137px;
             padding: 6px;
         }
-        .radio-group {
-            margin-bottom: 20px;
-            text-align: right;
-        }
+		.radio-group {
+			margin-bottom: 20px;
+			text-align: right;
+			display: inline-flex;
+		}
         .radio-group label {
             display: block;
             margin-bottom: 10px;
@@ -182,7 +183,7 @@
         </div>
 
         <!-- حقل إدخال التوقيت الأول -->
-        <label for="fromTime">أدخل التوقيت الأول:</label>
+		<label for="fromTime" style="display: block;">أدخل التوقيت الأول:</label>
         <input type="text" id="fromTime" placeholder="YYYY-MM-DD HH:MM AM/PM">
 
         <!-- حقل إدخال التوقيت الثاني -->
