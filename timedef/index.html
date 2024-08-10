@@ -151,7 +151,7 @@
 		 </svg>
     </button>
     <div class="container">
-        <h2>احسب الـ SLA او الفرق بين التوقيتين</h2>
+        <h2>احسب الـ SLA او المدة بين التوقيتين</h2>
 
         <!-- أزرار الاختيار Radio Button -->
         <div class="radio-group">
@@ -191,7 +191,7 @@
         <input type="text" id="toTime" placeholder="YYYY-MM-DD HH:MM AM/PM">
         <br><br>
 
-        <button id="calcButton">احسب الفرق</button>
+        <button id="calcButton">احسب المدة</button>
         <button id="resetButton">إعادة تعيين</button>
 
         <div class="result" id="result"></div>
@@ -300,7 +300,7 @@ function handleRadioChange() {
         const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
         const minutes = totalMinutes % 60;
 
-        document.getElementById('result').innerText = `الفرق: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة.`;
+        document.getElementById('result').innerText = `المدة: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة.`;
 
         // الحصول على القيم المختارة
         const location = document.getElementById('location').value;
