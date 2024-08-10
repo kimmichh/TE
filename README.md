@@ -21,7 +21,13 @@ https://1drv.ms/x/c/38a34126043a13c9/EUekNFkdiRJOiVHq0KacxWAB-HfZONmMZQJRW2E2xCm
 
 https://chat.whatsapp.com/B8RpzveTW6V3qoFyyPHl3h
 
-* مش محتاج اقولك ان استخدامك لأي كاند هو على مسؤولية حضرتك الشخصية ولازم دايما تتأكد من الويكي *																			
+* مش محتاج اقولك ان استخدامك لأي كاند هو على مسؤولية حضرتك الشخصية ولازم دايما تتأكد من الويكي *	
+
+
+
+دا لينك التول الي بتحسب SLA Outage 
+
+https://kimmichh.github.io/TE/timedef/																		
 																			
 																			
 تم بحمد الله																			
