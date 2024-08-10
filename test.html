@@ -80,7 +80,7 @@
             border-radius: 5px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.5s, visibility 0.5s;
+            transition: opacity 3s, visibility 3s;
         }
         .welcome-message.show {
             opacity: 1;
@@ -98,10 +98,23 @@
             background-color: #702283;
             color: #eceef7;
         }
+        .message-close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
     </style>
 </head>
 <body>
-    <div class="welcome-message" id="welcomeMessage">مرحبًا بك في صفحة حساب الفرق!</div>
+    <div class="welcome-message" id="welcomeMessage">
+        مرحبًا بك في صفحة حساب الفرق!
+        <button class="message-close-btn" onclick="closeWelcomeMessage()">×</button>
+    </div>
 
     <div class="container">
         <h2>احسب الـ SLA او الفرق بين التوقيتين</h2>
@@ -200,13 +213,14 @@
                 if (issue === '5') {
                     thresholdHours = (location === 'قاهرة') ? 3 : 4;
                 } else if (issue === '10') {
-                    thresholdDays = (days <= 3) ? 'Within 3 days' : 'Renew 3 Days';
+                    thresholdDays = (days <= 3) ? 'Within 3 Days' : 'Renew 3 Days';
                 } else {
                     thresholdHours = 2;
                 }
 
                 if (issue === '10') {
                     statusDiv.innerText = thresholdDays;
+                    statusDiv.className = thresholdDays === 'Within 3 Days' ? 'status available' : 'status not-available';
                 } else {
                     if (totalHours <= thresholdHours) {
                         statusDiv.innerText = "Within SLA";
@@ -216,37 +230,70 @@
                         statusDiv.className = "status not-available";
                     }
                 }
+
+                // إظهار الرسالة التحذيرية
+                showAlertMessage('متنساش تعرض تعويض الموبايل');
             } else {
                 document.getElementById('result').innerText = 'يرجى إدخال توقيتين صحيحين. تأكد من التنسيق.';
                 document.getElementById('status').innerText = '';
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('calcButton').addEventListener('click', calculateDifference);
-            document.getElementById('resetButton').addEventListener('click', function() {
-                document.getElementById('fromTime').value = '';
-                document.getElementById('toTime').value = '';
-                document.getElementById('result').innerText = '';
-                document.getElementById('status').innerText = '';
-            });
+        function closeWelcomeMessage() {
+            document.getElementById('welcomeMessage').style.display = 'none';
+        }
 
-            // رسالة الترحيب
+        function resetFields() {
+            document.getElementById('fromTime').value = '';
+            document.getElementById('toTime').value = '';
+            document.getElementById('result').innerText = '';
+            document.getElementById('status').innerText = '';
+        }
+
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            const toggleButton = document.getElementById('toggleModeButton');
+            toggleButton.innerText = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
+        }
+
+        function showAlertMessage(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert-message';
+            alertDiv.style.position = 'absolute';
+            alertDiv.style.top = '10px';
+            alertDiv.style.left = '50%';
+            alertDiv.style.transform = 'translateX(-50%)';
+            alertDiv.style.backgroundColor = '#f44336';
+            alertDiv.style.color = 'white';
+            alertDiv.style.padding = '10px';
+            alertDiv.style.borderRadius = '5px';
+            alertDiv.style.opacity = '0';
+            alertDiv.style.transition = 'opacity 3s';
+            alertDiv.innerText = message;
+
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.style.opacity = '1';
+            }, 0);
+
+            setTimeout(() => {
+                alertDiv.style.opacity = '0';
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 3000);
+            }, 3000);
+        }
+
+        document.getElementById('calcButton').addEventListener('click', calculateDifference);
+        document.getElementById('resetButton').addEventListener('click', resetFields);
+        document.getElementById('toggleModeButton').addEventListener('click', toggleMode);
+
+        // إظهار رسالة الترحيب عند تحميل الصفحة
+        window.onload = function() {
             const welcomeMessage = document.getElementById('welcomeMessage');
             welcomeMessage.classList.add('show');
-            setTimeout(() => {
-                welcomeMessage.classList.remove('show');
-            }, 5000);
-
-            // تغيير الوضع بين Light Mode و Dark Mode
-            const toggleModeButton = document.get
-
-ElementById('toggleModeButton');
-            toggleModeButton.addEventListener('click', function() {
-                document.body.classList.toggle('light-mode');
-                toggleModeButton.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
-            });
-        });
+        };
     </script>
 </body>
-</html>
+</html> 
