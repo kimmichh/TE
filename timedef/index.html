@@ -309,19 +309,19 @@ function handleRadioChange() {
         const statusDiv = document.getElementById('status');
         
         let thresholdHours = 2;
-        let thresholdDays = 'Renew 3 Days';
+        let thresholdDays = 'Renew 3 Days or 5 Days for HK';
         
         if (issue === '5') {
             thresholdHours = (location === 'قاهرة') ? 3 : 4;
         } else if (issue === '10') {
-            thresholdDays = (days <= 3) ? 'Within 3 Days or 5 Days for HK' : 'Renew 3 Days 5 Days for HK';
+            thresholdDays = (days <= 3) ? 'Within 3 Days or 5 Days for HK' : 'Renew 3 Days or 5 Days for HK';
         } else {
             thresholdHours = 2;
         }
 
         if (issue === '10') {
             statusDiv.innerText = thresholdDays;
-            statusDiv.className = thresholdDays === 'Within 3 Days' ? 'status available' : 'status not-available';
+            statusDiv.className = thresholdDays === 'Within 3 Days or 5 Days for HK' ? 'status available' : 'status not-available';
         } else {
             if (totalHours <= thresholdHours) {
                 statusDiv.innerText = "Within SLA";
