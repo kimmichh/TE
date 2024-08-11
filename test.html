@@ -210,6 +210,7 @@ function handleRadioChange() {
     const calculationType = document.querySelector('input[name="calculationType"]:checked').value;
     const slaFields = document.getElementById('slaFields');
     const toTimeField = document.getElementById('toTime');
+    const fromTimeField = document.getElementById('fromTime');
     const toTimeLabel = document.getElementById('toTimeLabel');
     const statusDiv = document.getElementById('status');
     const resultDiv = document.getElementById('result');
@@ -240,6 +241,8 @@ function handleRadioChange() {
         }
     } else if (calculationType === 'tts') {
         toTimeField.placeholder = "DD-MM-YYYY HH:MM AM/PM";
+	fromTimeField.placeholder = "DD-MM-YYYY HH:MM AM/PM";
+
 
 
         // إخفاء الرسالة التحذيرية إذا كان حساب الوقت للتعويض
