@@ -154,10 +154,12 @@
         <h2>احسب الـ SLA او المدة بين التوقيتين</h2>
 
         <!-- أزرار الاختيار Radio Button -->
-        <div class="radio-group">
-            <label><input type="radio" name="calculationType" value="sla" checked> حساب SLA</label>
-            <label><input type="radio" name="calculationType" value="compensation"> حساب الوقت للتعويض</label>
-        </div>
+<div class="radio-group">
+    <label><input type="radio" name="calculationType" value="sla" checked> حساب SLA</label>
+    <label><input type="radio" name="calculationType" value="compensation"> حساب الوقت للتعويض</label>
+    <label><input type="radio" name="calculationType" value="tts"> حساب تعويض TTS</label> <!-- إضافة هنا -->
+</div>
+
 
         <div id="slaFields">
             <label for="location">المحافظة:</label>
@@ -224,8 +226,8 @@ function handleRadioChange() {
         if (alertMessage) {
             alertMessage.style.display = 'none';
         }
-    } else if (calculationType === 'compensation') {
-		slaFields.style.display = 'none';
+    } else if (calculationType === 'compensation' || calculationType === 'tts') {
+        slaFields.style.display = 'none';
         toTimeField.classList.remove('hidden');
         toTimeLabel.classList.remove('hidden');
         statusDiv.style.display = 'none';
@@ -260,23 +262,20 @@ function handleRadioChange() {
             });
         });
 
-        function parseDateTime(dateString) {
-            const dateParts = dateString.split(' ');
-            const date = dateParts[0];
-            const time = dateParts[1];
-            const ampm = dateParts[2];
+function parseDateTime(dateString) {
+    const [date, time, ampm] = dateString.split(' ');
+    const [day, month, year] = date.split('-').map(Number);
+    let [hours, minutes] = time.split(':').map(Number);
 
-            const [year, month, day] = date.split('-').map(Number);
-            let [hours, minutes] = time.split(':').map(Number);
+    if (ampm === 'PM' && hours !== 12) {
+        hours += 12;
+    } else if (ampm === 'AM' && hours === 12) {
+        hours = 0;
+    }
 
-            if (ampm === 'PM' && hours !== 12) {
-                hours += 12;
-            } else if (ampm === 'AM' && hours === 12) {
-                hours = 0;
-            }
+    return new Date(year, month - 1, day, hours, minutes);
+}
 
-            return new Date(year, month - 1, day, hours, minutes);
-        }
 
        function calculateDifference() {
     const fromTimeStr = document.getElementById('fromTime').value.trim();
@@ -284,7 +283,7 @@ function handleRadioChange() {
 
     if (fromTimeStr && !toTimeStr) {
         const now = new Date();
-        toTimeStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} AM`;
+        toTimeStr = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} AM`;
         document.getElementById('toTime').value = toTimeStr;
     }
 
@@ -293,7 +292,6 @@ function handleRadioChange() {
         const to = parseDateTime(toTimeStr);
 
         const difference = to - from;
-
         const totalMinutes = Math.floor(difference / (1000 * 60));
         const totalHours = totalMinutes / 60;
         const days = Math.floor(totalMinutes / (60 * 24));
@@ -302,10 +300,9 @@ function handleRadioChange() {
 
         document.getElementById('result').innerText = `المدة: ${days} يوم، ${hours} ساعة، ${minutes} دقيقة.`;
 
-        // الحصول على القيم المختارة
+        // حسابات إضافية بناءً على نوع الحساب المختار
         const location = document.getElementById('location').value;
         const issue = document.getElementById('issue').value;
-
         const statusDiv = document.getElementById('status');
         
         let thresholdHours = 2;
@@ -332,7 +329,6 @@ function handleRadioChange() {
             }
         }
 
-        // إظهار الرسالة التحذيرية فقط عند حساب SLA
         if (document.querySelector('input[name="calculationType"]:checked').value === 'sla') {
             showAlertMessage('متنساش تعرض تعويض الموبايل');
         }
