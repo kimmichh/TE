@@ -154,10 +154,11 @@
         <h2>احسب الـ SLA او المدة بين التوقيتين</h2>
 
         <!-- أزرار الاختيار Radio Button -->
-        <div class="radio-group">
-            <label><input type="radio" name="calculationType" value="sla" checked> حساب SLA</label>
-            <label><input type="radio" name="calculationType" value="compensation"> حساب الوقت للتعويض</label>
-        </div>
+<div class="radio-group">
+    <label><input type="radio" name="calculationType" value="sla" checked> حساب SLA</label>
+    <label><input type="radio" name="calculationType" value="compensation"> حساب الوقت للتعويض</label>
+    <label><input type="radio" name="calculationType" value="tts"> حساب تعويض TTS</label> <!-- إضافة هنا -->
+</div>
 
         <div id="slaFields">
             <label for="location">المحافظة:</label>
@@ -224,8 +225,8 @@ function handleRadioChange() {
         if (alertMessage) {
             alertMessage.style.display = 'none';
         }
-    } else if (calculationType === 'compensation') {
-		slaFields.style.display = 'none';
+    } else if (calculationType === 'compensation' || calculationType === 'tts') {
+	slaFields.style.display = 'none';
         toTimeField.classList.remove('hidden');
         toTimeLabel.classList.remove('hidden');
         statusDiv.style.display = 'none';
